@@ -1,0 +1,20 @@
+# Ignore compiled files and binary outputs
+target/
+
+# Ignore the .env file (for sensitive data like database credentials)
+.env
+
+# Ignore the database folder if used locally
+db/
+
+# Ignore editor and IDE specific files
+.idea/
+.vscode/
+
+# Ignore lock files for Rust or Node.js
+Cargo.lock
+package-lock.json
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
