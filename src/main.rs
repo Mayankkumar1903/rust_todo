@@ -1,9 +1,9 @@
 mod models; // Declare the models module
 mod handlers; // Declare the handlers module
 mod db; // Declare the db module for get_database
-use axum::{Router, routing::{post, get, delete}, extract::Extension};
+use axum::{extract::Extension, routing::{delete, get, post}, Router};
 use mongodb::Collection;
-use crate::handlers::{insert_todo, find_todo_by_title, delete_todo_by_title};
+use crate::handlers::{insert_todo,get_all_todos ,find_todo_by_id, delete_todo_by_id , update_todo_status_by_id};
 use crate::models::Todo;
 use crate::db::get_database; // Import the get_database function
 
@@ -17,9 +17,14 @@ async fn main() {
         // Insert Todo route
         .route("/todo", post(insert_todo).layer(Extension(collection.clone())))
         // View Todo by title route
-        .route("/todo/:title", get(find_todo_by_title).layer(Extension(collection.clone())))
+        .route("/todo/:id", get(find_todo_by_id).layer(Extension(collection.clone())))
+        //Get all todos
+        .route("/alltodo",get(get_all_todos).layer(Extension(collection.clone())))
         // Delete Todo by title route
-        .route("/todo/:title", delete(delete_todo_by_title).layer(Extension(collection.clone())));
+        .route("/todo/:id", delete(delete_todo_by_id).layer(Extension(collection.clone())))
+        // Update todo by id 
+        .route("/todo/:id",post(update_todo_status_by_id).layer(Extension(collection.clone())));
+
 
     // Start the server (using a specific address)
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
